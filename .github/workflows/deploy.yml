@@ -35,7 +35,8 @@ jobs:
         env:
           ASTRO_SITE: https://${{ github.repository_owner }}.github.io
           ASTRO_BASE: /${{ github.event.repository.name }}
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
@@ -46,5 +47,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
