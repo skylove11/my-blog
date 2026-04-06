@@ -1,0 +1,135 @@
+{
+	"markdown.preview.styles": [".vscode/markdown-preview.css"],
+	// AI 채팅·요약의 백틱/경로 알약: textPreformat·chat.* 로 밝은 노랑/흰색 강제
+	"workbench.colorCustomizations": {
+		"textLink.foreground": "#FDE047",
+		"textLink.activeForeground": "#FFFEF0",
+		"textPreformat.foreground": "#FFFFFF",
+		"textPreformat.background": "#2d2d2d",
+		"textPreformat.border": "#5c4d00",
+		"textCodeBlock.background": "#1a1a1a",
+		"textBlockQuote.foreground": "#F5F5F5",
+		"textBlockQuote.background": "#141414",
+		"textSeparator.foreground": "#888888",
+		"chat.slashCommandForeground": "#FFEB3B",
+		"chat.slashCommandBackground": "#3d3500",
+		"chat.editedFileForeground": "#FFEB3B",
+		"chat.avatarForeground": "#FFF9C4",
+		"chat.requestCodeBorder": "#8a7a20",
+		"chat.linesAddedForeground": "#E8F5E9",
+		"chat.linesRemovedForeground": "#FFCDD2",
+		"inlineChat.foreground": "#F5F5F5",
+		"inlineChatInput.background": "#252525",
+		"inlineChatInput.border": "#555555",
+		"[Anysphere Dark]": {
+			"textPreformat.foreground": "#FFFFFF",
+			"textPreformat.background": "#2d2d2d",
+			"textLink.foreground": "#FDE047",
+			"textLink.activeForeground": "#FFFEF0",
+			"chat.editedFileForeground": "#FFEB3B",
+			"chat.slashCommandForeground": "#FFEB3B"
+		},
+		"[Default Dark Modern]": {
+			"textPreformat.foreground": "#FFFFFF",
+			"textPreformat.background": "#2d2d2d",
+			"textLink.foreground": "#FDE047",
+			"textLink.activeForeground": "#FFFEF0",
+			"chat.editedFileForeground": "#FFEB3B",
+			"chat.slashCommandForeground": "#FFEB3B"
+		},
+		"[Dark+ (default dark)]": {
+			"textPreformat.foreground": "#FFFFFF",
+			"textPreformat.background": "#2d2d2d",
+			"textLink.foreground": "#FDE047",
+			"textLink.activeForeground": "#FFFEF0",
+			"chat.editedFileForeground": "#FFEB3B",
+			"chat.slashCommandForeground": "#FFEB3B"
+		}
+	},
+	"editor.tokenColorCustomizations": {
+		"textMateRules": [
+			{
+				"name": "Markdown 링크·이미지 링크",
+				"scope": [
+					"markup.underline.link.markdown",
+					"markup.underline.link.image.markdown"
+				],
+				"settings": {
+					"foreground": "#FDE047"
+				}
+			},
+			{
+				"name": "Markdown 링크 제목·인라인 링크",
+				"scope": [
+					"string.other.link.title.markdown",
+					"markup.link.inline.markdown",
+					"punctuation.definition.link.markdown",
+					"punctuation.definition.string.begin.markdown",
+					"punctuation.definition.string.end.markdown"
+				],
+				"settings": {
+					"foreground": "#FFEB3B"
+				}
+			},
+			{
+				"name": "Markdown 제목",
+				"scope": [
+					"markup.heading.markdown",
+					"entity.name.section.markdown",
+					"markup.heading.setext.1.markdown",
+					"markup.heading.setext.2.markdown",
+					"punctuation.definition.heading.markdown"
+				],
+				"settings": {
+					"foreground": "#FFFFFF"
+				}
+			},
+			{
+				"name": "Markdown 강조(볼드)",
+				"scope": ["markup.bold.markdown"],
+				"settings": {
+					"foreground": "#FFF9C4",
+					"fontStyle": "bold"
+				}
+			},
+			{
+				"name": "Markdown 인라인 코드·백틱 경로",
+				"scope": [
+					"markup.inline.raw.markdown",
+					"markup.inline.raw.string.markdown",
+					"punctuation.definition.raw.markdown",
+					"punctuation.definition.raw.begin.markdown",
+					"punctuation.definition.raw.end.markdown",
+					"meta.embedded.block.markdown"
+				],
+				"settings": {
+					"foreground": "#FFFFFF"
+				}
+			},
+			{
+				"name": "Markdown 펜스 코드 블록",
+				"scope": [
+					"markup.fenced_code.block.markdown",
+					"fenced_code.block.language",
+					"markup.raw.block.markdown",
+					"variable.language.fenced.markdown"
+				],
+				"settings": {
+					"foreground": "#FFFEF0"
+				}
+			},
+			{
+				"name": "Markdown 목록·일반 본문(가독성)",
+				"scope": [
+					"meta.paragraph.markdown",
+					"markup.list.unnumbered.markdown",
+					"markup.list.numbered.markdown",
+					"markup.quote.markdown"
+				],
+				"settings": {
+					"foreground": "#E8E8E8"
+				}
+			}
+		]
+	}
+}

@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getPublishedPosts } from "../../../lib/blog";
+export async function getStaticPaths() {
+	const posts = await getPublishedPosts();
+	const catSet = new Set<string>();
+	for (const p of posts) {
+		for (const c of p.data.categories) {
+			catSet.add(c);
+		}
+	}
+	return [...catSet].map((category) => ({
+		params: { category },
+		props: { category },
+	}));
+}
+
+interface Props {
+	category: string;
+}
+
+const { category } = Astro.props;
+const posts = await getPublishedPosts();
+const filtered = posts.filter((p) => p.data.categories.includes(category));
+const base = import.meta.env.BASE_URL.endsWith("/")
+	? import.meta.env.BASE_URL
+	: `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout title={`카테고리: ${category}`} description={`「${category}」 카테고리 글`}>
+	<h1>카테고리: {category}</h1>
+	<p class="muted">
+		<a href={`${base}blog/categories`}>모든 카테고리</a>
+		{" · "}
+		<a href={`${base}blog`}>Blog</a>
+	</p>
+	<ul class="post-list">
+		{
+			filtered.map((post) => (
+				<li>
+					<a href={`${base}blog/${post.id}`}>{post.data.title}</a>
+					<div class="muted">
+						{post.data.date.toLocaleDateString("ko-KR")}
+					</div>
+				</li>
+			))
+		}
+	</ul>
+</BaseLayout>

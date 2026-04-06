@@ -1,0 +1,91 @@
+---
+import "../styles/global.css";
+import { siteTitle as defaultSiteTitle } from "../site.config";
+
+interface Props {
+	title: string;
+	description?: string;
+	/** 예: noindex — 404 등 */
+	robots?: string;
+}
+
+const { title, description, robots } = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith("/")
+	? import.meta.env.BASE_URL
+	: `${import.meta.env.BASE_URL}/`;
+
+const siteTitle = defaultSiteTitle;
+const pageTitle = title === siteTitle ? title : `${title} · ${siteTitle}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
+const siteRoot = new URL(import.meta.env.BASE_URL, Astro.site ?? Astro.url);
+const rssHref = new URL("rss.xml", siteRoot).href;
+const ogDesc = description ?? "";
+
+const basePath = new URL(import.meta.env.BASE_URL, Astro.site ?? "http://localhost").pathname.replace(
+	/\/$/,
+	"",
+);
+const rel = Astro.url.pathname.slice(basePath.length) || "/";
+const clean = rel.replace(/\/$/, "") || "/";
+const segments = clean.split("/").filter(Boolean);
+const isHome = segments.length === 0;
+const isAbout = segments[0] === "about";
+const isBlog = segments[0] === "blog";
+---
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/png" href={`${base}blogfavicon.png`} />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="canonical" href={canonical} />
+		<link rel="alternate" type="application/rss+xml" title={`${siteTitle} RSS`} href={rssHref} />
+		<title>{pageTitle}</title>
+		{description ? <meta name="description" content={description} /> : null}
+		{robots ? <meta name="robots" content={robots} /> : null}
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={ogDesc} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="ko_KR" />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		{ogDesc ? <meta name="twitter:description" content={ogDesc} /> : null}
+	</head>
+	<body>
+		<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+		<div class="wrap">
+			<header class="site-header">
+				<p class="site-title">
+					<a class="site-brand" href={base}>
+						<img
+							class="site-logo"
+							src={`${base}blogicon.png`}
+							alt=""
+							width="44"
+							height="44"
+							decoding="async"
+						/>
+						<span class="site-brand__text">{siteTitle}</span>
+					</a>
+				</p>
+				<nav class="nav" aria-label="주 메뉴">
+					<a href={base} aria-current={isHome ? "page" : undefined}>Home</a>
+					<a href={`${base}about`} aria-current={isAbout ? "page" : undefined}>About</a>
+					<a href={`${base}blog`} aria-current={isBlog ? "page" : undefined}>Blog</a>
+				</nav>
+			</header>
+			<main id="main">
+				<slot />
+			</main>
+			<footer class="site-footer">
+				<span>© {new Date().getFullYear()} {siteTitle}</span>
+				<span class="site-footer__links">
+					<a href={`${base}rss.xml`}>RSS</a>
+				</span>
+			</footer>
+		</div>
+	</body>
+</html>

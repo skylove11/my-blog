@@ -1,0 +1,50 @@
+# 1단계: 정적 빌드 산출물(dist)을 GitHub Pages에 배포합니다.
+# 저장소 Settings → Pages → Source: GitHub Actions 로 둡니다.
+#
+# 프로젝트 사이트 URL은 보통 https://<owner>.github.io/<repo>/ 입니다.
+# 저장소가 <user>.github.io 인 루트 사이트라면 아래 Build 단계의 ASTRO_BASE 를 "/" 로 바꾸세요.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          ASTRO_SITE: https://${{ github.repository_owner }}.github.io
+          ASTRO_BASE: /${{ github.event.repository.name }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

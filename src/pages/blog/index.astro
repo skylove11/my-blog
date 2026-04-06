@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+	getPublishedPosts,
+	groupPostsByMonth,
+	formatMonthLabel,
+	type MonthKey,
+} from "../../lib/blog";
+
+const posts = await getPublishedPosts();
+const byMonth = groupPostsByMonth(posts);
+const months = [...byMonth.keys()].sort((a, b) => b.localeCompare(a));
+const base = import.meta.env.BASE_URL.endsWith("/")
+	? import.meta.env.BASE_URL
+	: `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout title="Blog" description="블로그 글 목록">
+	<h1>Blog</h1>
+	<p class="muted">월별 폴더로 관리한 글을 날짜 역순으로 보여 줍니다.</p>
+	<p class="muted">
+		<a href={`${base}blog/tags`}>태그</a>
+		{" · "}
+		<a href={`${base}blog/categories`}>카테고리</a>
+	</p>
+	{
+		months.length === 0 ? (
+			<p class="muted">아직 발행된 글이 없습니다.</p>
+		) : (
+			months.map((month: MonthKey) => (
+				<section>
+					<h2 class="month-heading">{formatMonthLabel(month)}</h2>
+					<ul class="post-list">
+						{byMonth.get(month)!.map((post) => (
+							<li>
+								<a href={`${base}blog/${post.id}`}>{post.data.title}</a>
+								{post.data.description ? (
+									<div class="muted">{post.data.description}</div>
+								) : null}
+							</li>
+						))}
+					</ul>
+				</section>
+			))
+		)
+	}
+</BaseLayout>
